@@ -16,3 +16,5 @@
       ansible.builtin.import_tasks: ../tasks/provision/sshd.yml
     - name: Include gui tasks
       ansible.builtin.import_tasks: ../tasks/provision/gui.yml
+    - name: Include dotfiles tasks
+      ansible.builtin.import_tasks: ../tasks/provision/dotfiles.yml

@@ -1,0 +1,14 @@
+---
+- name: Dotfiles
+  become: yes
+  become_user: devuser
+  block:
+    - name: Check if dotfiles repo exists
+      ansible.builtin.stat:
+        path: /home/devuser/repos/dotfiles
+      register: dotfiles_check
+
+    - name: Install dotfiles via init script
+      ansible.builtin.shell:
+        cmd: curl -fsSL https://lfendy-vim.github.io/init.sh | bash
+      when: not dotfiles_check.stat.exists
