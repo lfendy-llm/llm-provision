@@ -1,0 +1,19 @@
+---
+- name: Podman
+  become: yes
+  become_user: root
+  block:
+    - name: Ensure podman is installed
+      apt:
+        name: podman
+        state: present
+
+    - name: Ensure podman-compose is installed
+      apt:
+        name: podman-compose
+        state: present
+
+    - name: Ensure podman-docker is NOT installed (no docker alias)
+      apt:
+        name: podman-docker
+        state: absent
