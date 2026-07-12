@@ -38,10 +38,10 @@
       ansible.builtin.command:
         cmd: pi install npm:@demigodmode/pi-web-agent
       register: web_agent
-      changed_when: "'already installed' not in web_agent.stdout"
+      changed_when: "'up to date' not in web_agent.stdout"
 
     - name: Install pi-cost-counter
       ansible.builtin.command:
         cmd: pi install npm:@ctogg/pi-cost-counter
       register: cost_counter
-      changed_when: "'already installed' not in cost_counter.stdout"
+      changed_when: "'up to date' not in cost_counter.stdout"
