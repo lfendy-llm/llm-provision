@@ -71,7 +71,7 @@ build:
 	@echo "=========================================="
 	@echo "  Building container image: $(IMAGE_NAME)"
 	@echo "=========================================="
-	$(DOCKER_EXECUTABLE) build -t "$(IMAGE_NAME)" ./test
+	$(DOCKER_EXECUTABLE) build -t "$(IMAGE_NAME)" -f test/Dockerfile.cached_init ./test
 
 # -------------------------------------------------------------------
 # clean      — Remove the test container and image
