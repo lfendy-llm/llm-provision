@@ -11,3 +11,14 @@
         name: openbox
         state: present
         install_recommends: no
+
+    - name: Install firefox
+      apt:
+        name: firefox
+        state: present
+
+    - name: Set x-www-browser to firefox
+      community.general.alternatives:
+        name: x-www-browser
+        path: /usr/bin/firefox
+        priority: 50
