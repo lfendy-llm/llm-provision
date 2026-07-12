@@ -22,5 +22,6 @@
     - name: Ensure x-www-browser points to firefox
       community.general.alternatives:
         name: x-www-browser
+        link: /usr/bin/x-www-browser
         path: /usr/bin/firefox
         priority: 50
