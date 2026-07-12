@@ -3,17 +3,21 @@
   become: yes
   become_user: root
   block:
-    - name: Check if pi is already installed
-      ansible.builtin.command:
-        cmd: which pi
-      register: pi_check
-      ignore_errors: yes
-      changed_when: no
+    - name: Ensure nodejs is installed
+      apt:
+        name: nodejs
+        state: present
 
-    - name: Install pi.dev
-      ansible.builtin.shell:
-        cmd: curl -fsSL https://pi.dev/install.sh | sh
-      when: pi_check.rc != 0
+    - name: Ensure npm is installed
+      apt:
+        name: npm
+        state: present
+
+    - name: Ensure pi.dev is installed globally
+      npm:
+        name: "@earendil-works/pi-coding-agent"
+        global: yes
+        state: present
 
 - name: Pi packages (devuser)
   become: yes
