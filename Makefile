@@ -5,19 +5,13 @@ EXEC_USER     := localuser
 DOCKER_EXECUTABLE := $(shell command -v podman 2>/dev/null || command -v docker 2>/dev/null || echo docker)
 
 # Select Dockerfile and image name based on LLM_PROVISION_TEST_CACHED (default: 1)
-override DOCKERFILE := $(shell \
-  if [ "$(LLM_PROVISION_TEST_CACHED)" = "0" ]; then \
-    echo test/Dockerfile; \
-  else \
-    echo test/Dockerfile.cached_init; \
-  fi)
-
-override IMAGE_NAME := $(shell \
-  if [ "$(LLM_PROVISION_TEST_CACHED)" = "0" ]; then \
-    echo llm-provision-test-bare; \
-  else \
-    echo llm-provision-test-cached; \
-  fi)
+ifeq ($(LLM_PROVISION_TEST_CACHED),0)
+  DOCKERFILE := test/Dockerfile
+  IMAGE_NAME := llm-provision-test-bare
+else
+  DOCKERFILE := test/Dockerfile.cached_init
+  IMAGE_NAME := llm-provision-test-cached
+endif
 
 .PHONY: test test_local bash build clean
 
@@ -78,6 +72,7 @@ build:
 	@echo "=========================================="
 	$(DOCKER_EXECUTABLE) build -t "$(IMAGE_NAME)" -f "$(DOCKERFILE)" .
 
+# -------------------------------------------------------------------
 # clean      — Remove the test container and image
 # -------------------------------------------------------------------
 clean:
