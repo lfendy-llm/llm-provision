@@ -24,9 +24,11 @@
               curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
               apt-get install -y nodejs
 
-    - name: Install pi.dev
-      ansible.builtin.shell:
-        cmd: curl -fsSL https://pi.dev/install.sh | sh
+    - name: Ensure pi.dev is installed globally
+      npm:
+        name: "@earendil-works/pi-coding-agent"
+        global: yes
+        state: present
 
 - name: Pi packages (devuser)
   become: yes
