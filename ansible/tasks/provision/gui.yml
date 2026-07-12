@@ -3,9 +3,11 @@
   become: yes
   become_user: root
   block:
-    - name: Ensure xorg is present
+    - name: Ensure GUI packages are present
       apt:
-        name: xorg
+        name:
+          - xorg
+          - firefox
         state: present
 
     - name: Ensure openbox is present (without recommends)
@@ -14,10 +16,6 @@
         state: present
         install_recommends: no
 
-    - name: Ensure firefox is present
-      apt:
-        name: firefox
-        state: present
 
     - name: Ensure x-www-browser points to firefox
       community.general.alternatives:

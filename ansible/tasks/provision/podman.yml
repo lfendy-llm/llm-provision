@@ -3,15 +3,13 @@
   become: yes
   become_user: root
   block:
-    - name: Ensure podman is installed
+    - name: Ensure podman packages are present
       apt:
-        name: podman
+        name:
+          - podman
+          - podman-compose
         state: present
 
-    - name: Ensure podman-compose is installed
-      apt:
-        name: podman-compose
-        state: present
 
     - name: Ensure podman-docker is NOT installed (no docker alias)
       apt:

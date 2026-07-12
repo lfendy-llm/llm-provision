@@ -3,25 +3,15 @@
   become: yes
   become_user: root
   block:
-    - name: Ensure net-tools is present
+    - name: Ensure CLI tools are present
       apt:
-        name: net-tools
+        name:
+          - net-tools
+          - tmux
+          - vim
+          - fzf
         state: present
 
-    - name: Ensure tmux is present
-      apt:
-        name: tmux
-        state: present
-
-    - name: Ensure vim is present
-      apt:
-        name: vim
-        state: present
-
-    - name: Ensure fzf is present
-      apt:
-        name: fzf
-        state: present
 
 - name: Oh My Zsh
   become: yes
