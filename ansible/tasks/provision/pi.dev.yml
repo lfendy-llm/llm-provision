@@ -3,15 +3,25 @@
   become: yes
   become_user: root
   block:
-    - name: Ensure nodejs is installed
-      apt:
-        name: nodejs
-        state: present
+    - name: Check node version
+      ansible.builtin.command:
+        cmd: node --version
+      register: node_version
+      changed_when: no
+      ignore_errors: yes
 
-    - name: Ensure npm is installed
-      apt:
-        name: npm
-        state: present
+    - name: Install Node.js 22.x from NodeSource
+      when: node_version.rc != 0 or node_version.stdout is version('22', '<')
+      block:
+        - name: Run NodeSource setup script
+          ansible.builtin.shell:
+            cmd: curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+
+        - name: Install nodejs from NodeSource
+          apt:
+            name: nodejs
+            state: present
+            update_cache: yes
 
     - name: Ensure pi.dev is installed globally
       npm:
