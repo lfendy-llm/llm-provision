@@ -6,7 +6,8 @@
 # Ubuntu Server installation.  It will:
 #   1.  Update package lists and upgrade all packages.
 #   2.  Ensure git is installed.
-#   3.  Ensure Ansible is installed.
+#   3.  Ensure make is installed.
+#   4.  Ensure Ansible is installed.
 #
 # Usage:
 #   chmod +x init.sh
@@ -39,11 +40,25 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 3 — Ensure Ansible is installed
+# Step 3 — Ensure make is installed
 # ---------------------------------------------------------------------------
 echo ""
 echo "========================================"
-echo "  Step 3: Ensure Ansible is installed"
+echo "  Step 3: Ensure make is installed"
+echo "========================================"
+if ! command -v make &>/dev/null; then
+    echo "make not found — installing..."
+    sudo apt install -y make
+else
+    echo "make is already installed ($(make --version 2>&1 | head -1))"
+fi
+
+# ---------------------------------------------------------------------------
+# Step 4 — Ensure Ansible is installed
+# ---------------------------------------------------------------------------
+echo ""
+echo "========================================"
+echo "  Step 4: Ensure Ansible is installed"
 echo "========================================"
 if ! command -v ansible-playbook &>/dev/null; then
     echo "ansible not found — installing..."
