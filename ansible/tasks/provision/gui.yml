@@ -1,5 +1,5 @@
 ---
-- name: gui
+- name: Ensuring lightweight GUI is present (openbox xorg)
   become: yes
   become_user: root
   block:
