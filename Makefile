@@ -19,7 +19,7 @@ override IMAGE_NAME := $(shell \
     echo llm-provision-test-cached; \
   fi)
 
-.PHONY: test test_local build clean
+.PHONY: test test_local bash build clean
 
 # -------------------------------------------------------------------
 # test       — Build the container and provision from GitHub
@@ -54,6 +54,21 @@ test_local: build
 		bash -c "bash /home/$(EXEC_USER)/repos/llm-provision/init.sh"
 
 # -------------------------------------------------------------------
+# bash       — Open an interactive shell in the container
+# -------------------------------------------------------------------
+bash: build
+	@echo "=========================================="
+	@echo "  Opening interactive shell"
+	@echo "=========================================="
+	$(DOCKER_EXECUTABLE) run --rm -it \
+		--privileged \
+		--user "$(EXEC_USER)" \
+		--name "$(CONTAINER_NAME)" \
+		-v "$(PWD):/home/$(EXEC_USER)/repos/llm-provision" \
+		"$(IMAGE_NAME)" \
+		bash
+
+# -------------------------------------------------------------------
 # build      — Build the test container image
 # -------------------------------------------------------------------
 build:
@@ -63,7 +78,6 @@ build:
 	@echo "=========================================="
 	$(DOCKER_EXECUTABLE) build -t "$(IMAGE_NAME)" -f "$(DOCKERFILE)" .
 
-# -------------------------------------------------------------------
 # clean      — Remove the test container and image
 # -------------------------------------------------------------------
 clean:
