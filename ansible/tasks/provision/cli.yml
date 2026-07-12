@@ -27,3 +27,17 @@
       user:
         name: devuser
         shell: /usr/bin/zsh
+
+- name: Oh My Zsh
+  become: yes
+  become_user: devuser
+  block:
+    - name: Ensure oh-my-zsh is installed
+      ansible.builtin.stat:
+        path: /home/devuser/.oh-my-zsh
+      register: omz_check
+
+    - name: Install oh-my-zsh
+      ansible.builtin.shell:
+        cmd: curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh -s -- --unattended
+      when: not omz_check.stat.exists
