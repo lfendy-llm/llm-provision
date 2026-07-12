@@ -1,0 +1,46 @@
+# Test container for provisioning a fresh Ubuntu Server
+# This container mimics a fresh Ubuntu Server install for running
+# provisioning tests (systemd services, apt packages, config files, etc.)
+
+FROM ubuntu:24.04
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
+# Set up systemd as the init system (required for testing service management)
+RUN apt-get update && apt-get install -y \
+    systemd \
+    systemd-sysv \
+    systemd-resolved \
+    dbus \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Remove unnecessary systemd units to speed up boot
+RUN rm -f /lib/systemd/system/systemd*udev* \
+    /lib/systemd/system/getty@* \
+    /lib/systemd/system/serial-getty@* \
+    /lib/systemd/system/console-getty* \
+    /lib/systemd/system/container-getty* \
+    /lib/systemd/system/autovt@* \
+    /lib/systemd/system/*-display-manager* \
+    /lib/systemd/system/*gdm* \
+    /lib/systemd/system/plymouth* \
+    /lib/systemd/system/hwclock* \
+    /lib/systemd/system/NetworkManager*
+
+# Create default machine-id for systemd
+RUN systemd-machine-id-setup
+
+# Configure systemd-resolved for DNS
+RUN systemctl enable systemd-resolved
+
+# Set up a basic sshd user and root password for testing (optional)
+RUN echo "root:root" | chpasswd
+
+# Set working directory for provisioning scripts
+WORKDIR /provisioning
+
+# Default command: run systemd as PID 1
+CMD ["/lib/systemd/systemd"]
