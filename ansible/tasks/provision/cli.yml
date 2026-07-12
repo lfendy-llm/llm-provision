@@ -17,3 +17,8 @@
       apt:
         name: vim
         state: present
+
+    - name: Ensure zsh is present
+      apt:
+        name: zsh
+        state: present
