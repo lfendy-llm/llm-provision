@@ -44,3 +44,19 @@
         - "@ctogg/pi-cost-counter"
         - pi-deepseek-optimized
         - pi-patty-bg-tasks
+
+    - name: Ensure .pi/agent directory exists
+      ansible.builtin.file:
+        path: /home/devuser/.pi/agent
+        state: directory
+        mode: "0755"
+        owner: devuser
+        group: devuser
+
+    - name: Deploy models.json
+      ansible.builtin.copy:
+        src: ../files/models.json
+        dest: /home/devuser/.pi/agent/models.json
+        mode: "0644"
+        owner: devuser
+        group: devuser
