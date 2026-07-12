@@ -8,5 +8,7 @@
   tasks:
     - name: Include cli tasks
       ansible.builtin.import_tasks: ../tasks/provision/cli.yml
+    - name: Include sshd tasks
+      ansible.builtin.import_tasks: ../tasks/provision/sshd.yml
     - name: Include gui tasks
       ansible.builtin.import_tasks: ../tasks/provision/gui.yml

@@ -1,0 +1,43 @@
+---
+- name: SSH
+  become: yes
+  become_user: root
+  block:
+    - name: Ensure openssh-server is installed
+      apt:
+        name: openssh-server
+        state: present
+
+    - name: Ensure passwordless SSH login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PasswordAuthentication"
+        line: "PasswordAuthentication no"
+
+    - name: Ensure public key authentication is enabled
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PubkeyAuthentication"
+        line: "PubkeyAuthentication yes"
+
+    - name: Ensure devuser .ssh directory exists
+      file:
+        path: /home/devuser/.ssh
+        state: directory
+        mode: "0700"
+        owner: devuser
+        group: devuser
+
+    - name: Ensure devuser authorized_keys is present
+      copy:
+        src: ../files/authorized_keys
+        dest: /home/devuser/.ssh/authorized_keys
+        mode: "0600"
+        owner: devuser
+        group: devuser
+
+    - name: Ensure sshd is restarted
+      systemd:
+        name: sshd
+        state: restarted
+        daemon_reload: yes
