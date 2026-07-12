@@ -23,12 +23,6 @@
   become: yes
   become_user: devuser
   block:
-    - name: Install pi-deepseek-optimised
-      ansible.builtin.command:
-        cmd: pi install npm:pi-deepseek-optimised
-      register: deepseek
-      changed_when: "'already installed' not in deepseek.stdout"
-
     - name: Install pi-web-agent
       ansible.builtin.command:
         cmd: pi install npm:@demigodmode/pi-web-agent
