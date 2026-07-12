@@ -6,8 +6,7 @@
 # Ubuntu Server installation.  It will:
 #   1.  Update package lists and upgrade all packages.
 #   2.  Ensure git is installed.
-#
-# After this completes, run pull.sh to clone the llm-provision repository.
+#   3.  Ensure Ansible is installed.
 #
 # Usage:
 #   chmod +x init.sh
@@ -37,6 +36,20 @@ if ! command -v git &>/dev/null; then
     sudo apt install -y git
 else
     echo "git is already installed ($(git --version))"
+fi
+
+# ---------------------------------------------------------------------------
+# Step 3 — Ensure Ansible is installed
+# ---------------------------------------------------------------------------
+echo ""
+echo "========================================"
+echo "  Step 3: Ensure Ansible is installed"
+echo "========================================"
+if ! command -v ansible-playbook &>/dev/null; then
+    echo "ansible not found — installing..."
+    sudo apt install -y ansible
+else
+    echo "ansible is already installed ($(ansible --version 2>&1 | head -1))"
 fi
 
 echo ""
