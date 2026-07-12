@@ -36,8 +36,14 @@
         owner: devuser
         group: devuser
 
-    - name: Ensure sshd is restarted
+    - name: Check if systemd is available
+      ansible.builtin.stat:
+        path: /run/systemd/system
+      register: systemd_check
+
+    - name: Restart sshd
       systemd:
         name: sshd
         state: restarted
         daemon_reload: yes
+      when: systemd_check.stat.exists
