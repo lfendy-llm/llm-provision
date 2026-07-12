@@ -24,7 +24,7 @@ REMOTE_URL="https://github.com/lfendy-llm/llm-provision.git"
 # ---------------------------------------------------------------------------
 echo "========================================"
 echo "  init.sh: Step 1 — Install dependencies"
-echo "========================================
+echo "========================================"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ -f "${SCRIPT_DIR}/install-deps.sh" ]]; then
@@ -42,18 +42,18 @@ if [[ -d "$TARGET_DIR" ]]; then
     echo ""
     echo "========================================"
     echo "  init.sh: Step 2 — Skipped (already exists)"
-    echo "========================================
+    echo "========================================"
 else
     echo ""
     echo "========================================"
     echo "  init.sh: Step 2 — Clone llm-provision"
-    echo "========================================
+    echo "========================================"
     echo "Cloning ${REMOTE_URL} into ${TARGET_DIR}..."
     git clone "$REMOTE_URL" "$TARGET_DIR"
     echo ""
     echo "========================================"
     echo "  init.sh: Done — Repository is at ${TARGET_DIR}"
-    echo "========================================
+    echo "========================================"
 fi
 
 # ---------------------------------------------------------------------------
@@ -62,11 +62,11 @@ fi
 echo ""
 echo "========================================"
 echo "  init.sh: Step 3 — Run Ansible playbook"
-echo "========================================
+echo "========================================"
 cd "${TARGET_DIR}/ansible"
 sudo make provision
 
 echo ""
 echo "========================================"
 echo "  init.sh: Complete!"
-echo "========================================
+echo "========================================"
