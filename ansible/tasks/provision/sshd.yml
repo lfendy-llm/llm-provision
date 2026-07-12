@@ -41,9 +41,10 @@
         path: /run/systemd/system
       register: systemd_check
 
-    - name: Restart sshd
+    - name: Ensure sshd is enabled and running at boot
       systemd:
         name: sshd
         state: restarted
+        enabled: yes
         daemon_reload: yes
       when: systemd_check.stat.exists
