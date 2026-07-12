@@ -23,7 +23,7 @@ endif
 test: build
 	@echo "========================================"
 	@echo "  Makefile: Provisioning from GitHub"
-	@echo "========================================
+	@echo "========================================"
 	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
 	$(DOCKER_EXECUTABLE) run --rm \
 		--privileged \
@@ -39,7 +39,7 @@ test: build
 test_local: build
 	@echo "========================================"
 	@echo "  Makefile: Provisioning from local mount"
-	@echo "========================================
+	@echo "========================================"
 	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
 	$(DOCKER_EXECUTABLE) run --rm \
 		--privileged \
@@ -55,7 +55,7 @@ test_local: build
 bash: build
 	@echo "========================================"
 	@echo "  Makefile: Opening interactive shell"
-	@echo "========================================
+	@echo "========================================"
 	$(DOCKER_EXECUTABLE) run --rm -it \
 		--privileged \
 		--user "$(EXEC_USER)" \
@@ -80,7 +80,7 @@ build-base:
 	@echo "========================================"
 	@echo "  Makefile: Building $(BASE_IMAGE)"
 	@echo "  Dockerfile: test/Dockerfile.$(BASE_IMAGE)"
-	@echo "========================================
+	@echo "========================================"
 	$(DOCKER_EXECUTABLE) build -t "$(BASE_IMAGE)" -f "test/Dockerfile.$(BASE_IMAGE)" .
 
 # -------------------------------------------------------------------
@@ -90,7 +90,7 @@ build-cached: build-base
 	@echo "========================================"
 	@echo "  Makefile: Building $(CACHED_IMAGE)"
 	@echo "  Dockerfile: test/Dockerfile.$(CACHED_IMAGE)"
-	@echo "========================================
+	@echo "========================================"
 	$(DOCKER_EXECUTABLE) build -t "$(CACHED_IMAGE)" -f "test/Dockerfile.$(CACHED_IMAGE)" .
 
 # -------------------------------------------------------------------

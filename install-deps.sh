@@ -11,19 +11,26 @@
 
 set -euo pipefail
 
+# Use sudo only when not already root
+if [ "$(id -u)" -eq 0 ]; then
+  SUDO=""
+else
+  SUDO="sudo"
+fi
+
 echo "========================================"
 echo "  install-deps: apt update && apt upgrade"
-echo "========================================
-sudo apt-get update -y
-sudo apt-get upgrade -y
+echo "========================================"
+$SUDO apt-get update -y
+$SUDO apt-get upgrade -y
 
 echo ""
 echo "========================================"
 echo "  install-deps: Ensure git is installed"
-echo "========================================
+echo "========================================"
 if ! command -v git &>/dev/null; then
     echo "git not found — installing..."
-    sudo apt-get install -y git
+    $SUDO apt-get install -y git
 else
     echo "git is already installed ($(git --version))"
 fi
@@ -31,10 +38,10 @@ fi
 echo ""
 echo "========================================"
 echo "  install-deps: Ensure curl is installed"
-echo "========================================
+echo "========================================"
 if ! command -v curl &>/dev/null; then
     echo "curl not found — installing..."
-    sudo apt-get install -y curl
+    $SUDO apt-get install -y curl
 else
     echo "curl is already installed ($(curl --version 2>&1 | head -1))"
 fi
@@ -42,10 +49,10 @@ fi
 echo ""
 echo "========================================"
 echo "  install-deps: Ensure make is installed"
-echo "========================================
+echo "========================================"
 if ! command -v make &>/dev/null; then
     echo "make not found — installing..."
-    sudo apt-get install -y make
+    $SUDO apt-get install -y make
 else
     echo "make is already installed ($(make --version 2>&1 | head -1))"
 fi
@@ -53,10 +60,10 @@ fi
 echo ""
 echo "========================================"
 echo "  install-deps: Ensure Ansible is installed"
-echo "========================================
+echo "========================================"
 if ! command -v ansible-playbook &>/dev/null; then
     echo "ansible not found — installing..."
-    sudo apt-get install -y ansible
+    $SUDO apt-get install -y ansible
 else
     echo "ansible is already installed ($(ansible --version 2>&1 | head -1))"
 fi
