@@ -12,15 +12,15 @@
 set -euo pipefail
 
 echo "========================================"
-echo "  apt update && apt upgrade"
-echo "========================================"
+echo "  install-deps: apt update && apt upgrade"
+echo "========================================
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
 echo ""
 echo "========================================"
-echo "  Ensure git is installed"
-echo "========================================"
+echo "  install-deps: Ensure git is installed"
+echo "========================================
 if ! command -v git &>/dev/null; then
     echo "git not found — installing..."
     sudo apt-get install -y git
@@ -30,8 +30,8 @@ fi
 
 echo ""
 echo "========================================"
-echo "  Ensure curl is installed"
-echo "========================================"
+echo "  install-deps: Ensure curl is installed"
+echo "========================================
 if ! command -v curl &>/dev/null; then
     echo "curl not found — installing..."
     sudo apt-get install -y curl
@@ -41,8 +41,8 @@ fi
 
 echo ""
 echo "========================================"
-echo "  Ensure make is installed"
-echo "========================================"
+echo "  install-deps: Ensure make is installed"
+echo "========================================
 if ! command -v make &>/dev/null; then
     echo "make not found — installing..."
     sudo apt-get install -y make
@@ -52,8 +52,8 @@ fi
 
 echo ""
 echo "========================================"
-echo "  Ensure Ansible is installed"
-echo "========================================"
+echo "  install-deps: Ensure Ansible is installed"
+echo "========================================
 if ! command -v ansible-playbook &>/dev/null; then
     echo "ansible not found — installing..."
     sudo apt-get install -y ansible

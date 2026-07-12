@@ -21,9 +21,9 @@ endif
 # test       — Build the container and provision from GitHub
 # -------------------------------------------------------------------
 test: build
-	@echo "=========================================="
-	@echo "  Provisioning from GitHub"
-	@echo "=========================================="
+	@echo "========================================"
+	@echo "  Makefile: Provisioning from GitHub"
+	@echo "========================================
 	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
 	$(DOCKER_EXECUTABLE) run --rm \
 		--privileged \
@@ -37,9 +37,9 @@ test: build
 #              (clone step auto-skips because repo is mounted)
 # -------------------------------------------------------------------
 test_local: build
-	@echo "=========================================="
-	@echo "  Provisioning from local mount"
-	@echo "=========================================="
+	@echo "========================================"
+	@echo "  Makefile: Provisioning from local mount"
+	@echo "========================================
 	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
 	$(DOCKER_EXECUTABLE) run --rm \
 		--privileged \
@@ -53,9 +53,9 @@ test_local: build
 # bash       — Open an interactive shell in the container
 # -------------------------------------------------------------------
 bash: build
-	@echo "=========================================="
-	@echo "  Opening interactive shell"
-	@echo "=========================================="
+	@echo "========================================"
+	@echo "  Makefile: Opening interactive shell"
+	@echo "========================================
 	$(DOCKER_EXECUTABLE) run --rm -it \
 		--privileged \
 		--user "$(EXEC_USER)" \
@@ -77,28 +77,28 @@ endif
 # build-base  — Build the base image
 # -------------------------------------------------------------------
 build-base:
-	@echo "=========================================="
-	@echo "  Building container image: $(BASE_IMAGE)"
+	@echo "========================================"
+	@echo "  Makefile: Building $(BASE_IMAGE)"
 	@echo "  Dockerfile: test/Dockerfile.$(BASE_IMAGE)"
-	@echo "=========================================="
+	@echo "========================================
 	$(DOCKER_EXECUTABLE) build -t "$(BASE_IMAGE)" -f "test/Dockerfile.$(BASE_IMAGE)" .
 
 # -------------------------------------------------------------------
 # build-cached — Build the cached image (depends on base)
 # -------------------------------------------------------------------
 build-cached: build-base
-	@echo "=========================================="
-	@echo "  Building container image: $(CACHED_IMAGE)"
+	@echo "========================================"
+	@echo "  Makefile: Building $(CACHED_IMAGE)"
 	@echo "  Dockerfile: test/Dockerfile.$(CACHED_IMAGE)"
-	@echo "=========================================="
+	@echo "========================================
 	$(DOCKER_EXECUTABLE) build -t "$(CACHED_IMAGE)" -f "test/Dockerfile.$(CACHED_IMAGE)" .
 
 # -------------------------------------------------------------------
 # clean      — Remove the test container and images
 # -------------------------------------------------------------------
 clean:
-	@echo "Removing container and images..."
+	@echo "Makefile: Removing container and images..."
 	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
 	$(DOCKER_EXECUTABLE) rmi "$(BASE_IMAGE)" 2>/dev/null || true
 	$(DOCKER_EXECUTABLE) rmi "$(CACHED_IMAGE)" 2>/dev/null || true
-	@echo "Done."
+	@echo "Makefile: Done."

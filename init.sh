@@ -23,8 +23,8 @@ REMOTE_URL="https://github.com/lfendy-llm/llm-provision.git"
 # Step 1 — Install dependencies
 # ---------------------------------------------------------------------------
 echo "========================================"
-echo "  Step 1: Install dependencies"
-echo "========================================"
+echo "  init.sh: Step 1 — Install dependencies"
+echo "========================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ -f "${SCRIPT_DIR}/install-deps.sh" ]]; then
@@ -41,19 +41,19 @@ TARGET_DIR="${HOME}/repos/llm-provision"
 if [[ -d "$TARGET_DIR" ]]; then
     echo ""
     echo "========================================"
-    echo "  Step 2: Skipped — ${TARGET_DIR} already exists"
-    echo "========================================"
+    echo "  init.sh: Step 2 — Skipped (already exists)"
+    echo "========================================
 else
     echo ""
     echo "========================================"
-    echo "  Step 2: Clone llm-provision"
-    echo "========================================"
+    echo "  init.sh: Step 2 — Clone llm-provision"
+    echo "========================================
     echo "Cloning ${REMOTE_URL} into ${TARGET_DIR}..."
     git clone "$REMOTE_URL" "$TARGET_DIR"
     echo ""
     echo "========================================"
-    echo "  Done! Repository is at ${TARGET_DIR}"
-    echo "========================================"
+    echo "  init.sh: Done — Repository is at ${TARGET_DIR}"
+    echo "========================================
 fi
 
 # ---------------------------------------------------------------------------
@@ -61,12 +61,12 @@ fi
 # ---------------------------------------------------------------------------
 echo ""
 echo "========================================"
-echo "  Step 3: Run Ansible playbook"
-echo "========================================"
+echo "  init.sh: Step 3 — Run Ansible playbook"
+echo "========================================
 cd "${TARGET_DIR}/ansible"
 sudo make provision
 
 echo ""
 echo "========================================"
-echo "  init.sh complete!"
-echo "========================================"
+echo "  init.sh: Complete!"
+echo "========================================
