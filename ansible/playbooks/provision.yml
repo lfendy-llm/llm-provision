@@ -6,5 +6,5 @@
   gather_facts: yes
 
   tasks:
-    - name: Include install_gui tasks
-      ansible.builtin.import_tasks: ../tasks/provision/install_gui.yml
+    - name: Include gui tasks
+      ansible.builtin.import_tasks: ../tasks/provision/gui.yml
