@@ -6,7 +6,7 @@
 
   tasks:
     - name: Include apt_upgrade tasks
-      ansible.builtin.import_tasks: ../tasks/apt_upgrade.yml
+      ansible.builtin.import_tasks: ../tasks/bootstrap/apt_upgrade.yml
 
     - name: Include create_devuser tasks
-      ansible.builtin.import_tasks: ../tasks/create_devuser.yml
+      ansible.builtin.import_tasks: ../tasks/bootstrap/create_devuser.yml
