@@ -34,25 +34,24 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 3 — Clone / pull the llm-provision repository
+# Step 3 — Clone the llm-provision repository (if not already present)
 # ---------------------------------------------------------------------------
-echo ""
-echo "========================================"
-echo "  Step 3: Clone / pull llm-provision"
-echo "========================================"
-
 TARGET_DIR="${HOME}/repos/llm-provision"
 
 if [[ -d "$TARGET_DIR" ]]; then
-    echo "Repository already exists at ${TARGET_DIR} — pulling latest changes..."
-    cd "$TARGET_DIR"
-    git pull
+    echo ""
+    echo "========================================"
+    echo "  Step 3: Skipped — ${TARGET_DIR} already exists"
+    echo "========================================"
 else
+    echo ""
+    echo "========================================"
+    echo "  Step 3: Clone llm-provision"
+    echo "========================================"
     echo "Cloning ${REMOTE_URL} into ${TARGET_DIR}..."
     git clone "$REMOTE_URL" "$TARGET_DIR"
+    echo ""
+    echo "========================================"
+    echo "  Done! Repository is at ${TARGET_DIR}"
+    echo "========================================"
 fi
-
-echo ""
-echo "========================================"
-echo "  Done! Repository is at ${TARGET_DIR}"
-echo "========================================"
