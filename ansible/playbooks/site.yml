@@ -15,7 +15,3 @@
         upgrade: dist
         autoremove: yes
 
-    - name: Ensure git is installed
-      apt:
-        name: git
-        state: present
