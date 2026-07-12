@@ -16,7 +16,7 @@ else
   IMAGE_NAME := $(CACHED_IMAGE)
 endif
 
-.PHONY: test test_local server_local test_server bash build build-base build-cached clean
+.PHONY: test test_local server_local test_server bash_server bash build build-base build-cached clean
 
 # -------------------------------------------------------------------
 # test       — Build the container and provision from GitHub
@@ -97,7 +97,16 @@ test_server: server_local
 	$(DOCKER_EXECUTABLE) exec $(SERVER_CONTAINER_NAME) bash -c "bash /home/$(EXEC_USER)/repos/llm-provision/init.sh"
 
 # -------------------------------------------------------------------
-# bash       — Open an interactive shell in the container
+# bash_server — Open an interactive bash shell in the server container
+# -------------------------------------------------------------------
+bash_server: server_local
+	@echo "========================================"
+	@echo "  Makefile: Opening shell in server container"
+	@echo "========================================"
+	$(DOCKER_EXECUTABLE) exec -it $(SERVER_CONTAINER_NAME) bash
+
+# -------------------------------------------------------------------
+# bash       — Open an interactive shell in a disposable container
 # -------------------------------------------------------------------
 bash: build
 	@echo "========================================"
