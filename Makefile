@@ -5,12 +5,12 @@ EXEC_USER     := localuser
 # Auto-detect podman or docker
 DOCKER_EXECUTABLE := $(shell command -v podman 2>/dev/null || command -v docker 2>/dev/null || echo docker)
 
-# Select Dockerfile based on LLM_PROVISION_TEST_CACHED (default: 0)
+# Select Dockerfile based on LLM_PROVISION_TEST_CACHED (default: 1)
 override DOCKERFILE := $(shell \
-  if [ "$(LLM_PROVISION_TEST_CACHED)" = "1" ]; then \
-    echo test/Dockerfile.cached_init; \
-  else \
+  if [ "$(LLM_PROVISION_TEST_CACHED)" = "0" ]; then \
     echo test/Dockerfile; \
+  else \
+    echo test/Dockerfile.cached_init; \
   fi)
 
 .PHONY: test test_local build clean
