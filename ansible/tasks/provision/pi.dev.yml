@@ -3,30 +3,9 @@
   become: yes
   become_user: root
   block:
-    - name: Remove outdated Ubuntu nodejs if present
-      apt:
-        name: nodejs
-        state: absent
-      register: removed_nodejs
-
-    - name: Run NodeSource setup script (adds repo, installs nodejs)
+    - name: Install pi.dev
       ansible.builtin.shell:
-        cmd: |
-          curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-          apt-get install -y nodejs
-      register: install_result
-
-    - name: Verify node version is 22+
-      ansible.builtin.command:
-        cmd: node --version
-      register: node_version
-      changed_when: no
-
-    - name: Ensure pi.dev is installed globally
-      npm:
-        name: "@earendil-works/pi-coding-agent"
-        global: yes
-        state: present
+        cmd: curl -fsSL https://pi.dev/install.sh | sh
 
 - name: Pi packages (devuser)
   become: yes
