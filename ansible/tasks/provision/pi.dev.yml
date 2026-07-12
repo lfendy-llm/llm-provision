@@ -14,3 +14,25 @@
       ansible.builtin.shell:
         cmd: curl -fsSL https://pi.dev/install.sh | sh
       when: pi_check.rc != 0
+
+- name: Pi packages (devuser)
+  become: yes
+  become_user: devuser
+  block:
+    - name: Install pi-deepseek-optimised
+      ansible.builtin.command:
+        cmd: pi install npm:pi-deepseek-optimised
+      register: deepseek
+      changed_when: "'already installed' not in deepseek.stdout"
+
+    - name: Install pi-web-agent
+      ansible.builtin.command:
+        cmd: pi install npm:@demigodmode/pi-web-agent
+      register: web_agent
+      changed_when: "'already installed' not in web_agent.stdout"
+
+    - name: Install pi-cost-counter
+      ansible.builtin.command:
+        cmd: pi install npm:@ctogg/pi-cost-counter
+      register: cost_counter
+      changed_when: "'already installed' not in cost_counter.stdout"
