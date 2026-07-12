@@ -8,3 +8,6 @@ FROM llm-provision-test
 # Kept in sync with install-deps.sh — any change there triggers a rebuild.
 COPY install-deps.sh /tmp/install-deps.sh
 RUN bash /tmp/install-deps.sh && rm /tmp/install-deps.sh
+
+# Set working directory to the user's home
+WORKDIR /home/localuser

@@ -42,8 +42,8 @@ RUN useradd -m -s /bin/bash -u 2000 localuser \
     && echo "localuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/localuser \
     && chmod 440 /etc/sudoers.d/localuser
 
-# Set working directory for provisioning scripts
-WORKDIR /provisioning
+# Set working directory to the user's home
+WORKDIR /home/localuser
 
 # Default command: run systemd as PID 1
 CMD ["/lib/systemd/systemd"]
