@@ -24,7 +24,7 @@ echo "========================================"
 echo "  init.sh: Step 1 — Install dependencies"
 echo "========================================"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 if [[ -f "${SCRIPT_DIR}/install-deps.sh" ]]; then
     sudo bash "${SCRIPT_DIR}/install-deps.sh"
 else
