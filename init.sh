@@ -12,6 +12,7 @@
 #   3.  Ensure make is installed.
 #   4.  Ensure Ansible is installed.
 #   5.  Clone the llm-provision repository (if not already present).
+#   6.  Run the Ansible playbook (make provision).
 #
 # Usage:
 #   chmod +x init.sh
@@ -96,8 +97,17 @@ else
     echo "========================================"
 fi
 
+# ---------------------------------------------------------------------------
+# Step 6 — Run the Ansible playbook
+# ---------------------------------------------------------------------------
+echo ""
+echo "========================================"
+echo "  Step 6: Run Ansible playbook"
+echo "========================================"
+cd "${TARGET_DIR}/ansible"
+sudo make provision
+
 echo ""
 echo "========================================"
 echo "  init.sh complete!"
-echo "  Run: cd ~/repos/llm-provision/ansible && make provision"
 echo "========================================"

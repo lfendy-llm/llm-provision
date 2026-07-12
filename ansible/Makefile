@@ -3,10 +3,12 @@
 # -------------------------------------------------------------------
 # provision — Run the Ansible playbook locally
 #
-# -K prompts for the sudo password (omit if you have passwordless sudo)
+# Sudo is handled by the playbook's become: yes setting.
+# If your user requires a password for sudo, run with -K:
+#   make provision ANSIBLE_ARGS="-K"
 # -------------------------------------------------------------------
 provision:
 	@echo "=========================================="
 	@echo "  Running Ansible playbook locally"
 	@echo "=========================================="
-	ansible-playbook playbooks/site.yml -K
+	ansible-playbook playbooks/site.yml $(ANSIBLE_ARGS)
