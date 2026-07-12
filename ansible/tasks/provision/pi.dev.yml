@@ -45,3 +45,9 @@
         cmd: pi install npm:@ctogg/pi-cost-counter
       register: cost_counter
       changed_when: "'up to date' not in cost_counter.stdout"
+
+    - name: Install pi-deepseek-optimized
+      ansible.builtin.command:
+        cmd: pi install npm:pi-deepseek-optimized
+      register: deepseek
+      changed_when: "'up to date' not in deepseek.stdout"
