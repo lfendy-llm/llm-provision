@@ -10,6 +10,8 @@
       ansible.builtin.import_tasks: ../tasks/provision/cli.yml
     - name: Include podman tasks
       ansible.builtin.import_tasks: ../tasks/provision/podman.yml
+    - name: Include pi.dev tasks
+      ansible.builtin.import_tasks: ../tasks/provision/pi.dev.yml
     - name: Include sshd tasks
       ansible.builtin.import_tasks: ../tasks/provision/sshd.yml
     - name: Include gui tasks
