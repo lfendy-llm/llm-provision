@@ -30,7 +30,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ -f "${SCRIPT_DIR}/install-deps.sh" ]]; then
     sudo bash "${SCRIPT_DIR}/install-deps.sh"
 else
-    curl -fsSL "https://raw.githubusercontent.com/lfendy-llm/llm-provision/refs/heads/main/install-deps.sh" | sudo bash
+    curl -fsSL "https://raw.githubusercontent.com/lfendy-llm/llm-provision/refs/heads/main/install-deps.sh?ts=$(date +%s)" | sudo bash
 fi
 
 # ---------------------------------------------------------------------------
