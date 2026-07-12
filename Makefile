@@ -5,7 +5,15 @@ EXEC_USER     := localuser
 # Auto-detect podman or docker
 DOCKER_EXECUTABLE := $(shell command -v podman 2>/dev/null || command -v docker 2>/dev/null || echo docker)
 
-.PHONY: test test_local test_ansible build clean
+# Select Dockerfile based on LLM_PROVISION_TEST_CACHED (default: 0)
+override DOCKERFILE := $(shell \
+  if [ "$(LLM_PROVISION_TEST_CACHED)" = "1" ]; then \
+    echo test/Dockerfile.cached_init; \
+  else \
+    echo test/Dockerfile; \
+  fi)
+
+.PHONY: test test_local build clean
 
 # -------------------------------------------------------------------
 # test       — Build the container and provision from GitHub
@@ -56,22 +64,14 @@ test_local: build
 	@echo "=========================================="
 
 # -------------------------------------------------------------------
-# test_ansible — Build container and run Ansible playbook test
-# -------------------------------------------------------------------
-test_ansible:
-	@echo "=========================================="
-	@echo "  Running Ansible playbook test"
-	@echo "=========================================="
-	bash test/test_ansible.sh
-
-# -------------------------------------------------------------------
 # build      — Build the test container image
 # -------------------------------------------------------------------
 build:
 	@echo "=========================================="
 	@echo "  Building container image: $(IMAGE_NAME)"
+	@echo "  Dockerfile: $(DOCKERFILE)"
 	@echo "=========================================="
-	$(DOCKER_EXECUTABLE) build -t "$(IMAGE_NAME)" -f test/Dockerfile.cached_init ./test
+	$(DOCKER_EXECUTABLE) build -t "$(IMAGE_NAME)" -f "$(DOCKERFILE)" ./test
 
 # -------------------------------------------------------------------
 # clean      — Remove the test container and image
