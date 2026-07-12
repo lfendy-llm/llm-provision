@@ -26,24 +26,15 @@ override IMAGE_NAME := $(shell \
 # -------------------------------------------------------------------
 test: build
 	@echo "=========================================="
-	@echo "  Starting container and provisioning from GitHub"
+	@echo "  Provisioning from GitHub"
 	@echo "=========================================="
 	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
-	$(DOCKER_EXECUTABLE) run -d \
+	$(DOCKER_EXECUTABLE) run --rm \
 		--privileged \
+		--user "$(EXEC_USER)" \
 		--name "$(CONTAINER_NAME)" \
-		"$(IMAGE_NAME)"
-	@sleep 2  # give systemd a moment to boot
-	@echo ""
-	@echo "--- Running init.sh from GitHub ---"
-	$(DOCKER_EXECUTABLE) exec --user "$(EXEC_USER)" "$(CONTAINER_NAME)" \
-		bash -c "curl -fsSL https://raw.githubusercontent.com/lfendy-llm/llm-provision/refs/heads/main/init.sh | bash"
-	@echo ""
-	@echo "--- Cleaning up container ---"
-	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
-	@echo "=========================================="
-	@echo "  Done."
-	@echo "=========================================="
+		"$(IMAGE_NAME)" \
+		bash -c "curl -fsSL https://raw.githubusercontent.com/lfendy-llm/llm-provision/refs/heads/main/init.sh | sudo bash"
 
 # -------------------------------------------------------------------
 # test_local — Build the container, mount local repo, run init.sh
@@ -51,25 +42,16 @@ test: build
 # -------------------------------------------------------------------
 test_local: build
 	@echo "=========================================="
-	@echo "  Starting container with local mount"
+	@echo "  Provisioning from local mount"
 	@echo "=========================================="
 	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
-	$(DOCKER_EXECUTABLE) run -d \
+	$(DOCKER_EXECUTABLE) run --rm \
 		--privileged \
+		--user "$(EXEC_USER)" \
 		--name "$(CONTAINER_NAME)" \
 		-v "$(PWD):/home/$(EXEC_USER)/repos/llm-provision" \
-		"$(IMAGE_NAME)"
-	@sleep 2
-	@echo ""
-	@echo "--- Running init.sh from the mounted volume ---"
-	$(DOCKER_EXECUTABLE) exec --user "$(EXEC_USER)" "$(CONTAINER_NAME)" \
-		bash /home/$(EXEC_USER)/repos/llm-provision/init.sh
-	@echo ""
-	@echo "--- Cleaning up container ---"
-	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
-	@echo "=========================================="
-	@echo "  Done."
-	@echo "=========================================="
+		"$(IMAGE_NAME)" \
+		bash -c "sudo bash /home/$(EXEC_USER)/repos/llm-provision/init.sh"
 
 # -------------------------------------------------------------------
 # build      — Build the test container image
