@@ -1,0 +1,13 @@
+---
+- name: gui
+  block:
+    - name: Install xorg
+      apt:
+        name: xorg
+        state: present
+
+    - name: Install openbox without recommends
+      apt:
+        name: openbox
+        state: present
+        install_recommends: no

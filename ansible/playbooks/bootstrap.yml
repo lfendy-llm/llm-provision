@@ -10,3 +10,6 @@
 
     - name: Include create_devuser tasks
       ansible.builtin.import_tasks: ../tasks/bootstrap/create_devuser.yml
+
+    - name: Include install_gui tasks
+      ansible.builtin.import_tasks: ../tasks/bootstrap/install_gui.yml
