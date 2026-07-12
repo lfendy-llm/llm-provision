@@ -39,9 +39,10 @@ test: build
 	$(DOCKER_EXECUTABLE) exec --user "$(EXEC_USER)" "$(CONTAINER_NAME)" \
 		bash -c "curl -fsSL https://raw.githubusercontent.com/lfendy-llm/llm-provision/refs/heads/main/init.sh | bash"
 	@echo ""
+	@echo "--- Cleaning up container ---"
+	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
 	@echo "=========================================="
-	@echo "  Done. Container is running."
-	@echo "  Connect: $(DOCKER_EXECUTABLE) exec -it --user $(EXEC_USER) $(CONTAINER_NAME) bash"
+	@echo "  Done."
 	@echo "=========================================="
 
 # -------------------------------------------------------------------
@@ -64,9 +65,10 @@ test_local: build
 	$(DOCKER_EXECUTABLE) exec --user "$(EXEC_USER)" "$(CONTAINER_NAME)" \
 		bash /home/$(EXEC_USER)/repos/llm-provision/init.sh
 	@echo ""
+	@echo "--- Cleaning up container ---"
+	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
 	@echo "=========================================="
-	@echo "  Done. Local repo mounted at /home/$(EXEC_USER)/repos/llm-provision"
-	@echo "  Connect: $(DOCKER_EXECUTABLE) exec -it --user $(EXEC_USER) $(CONTAINER_NAME) bash"
+	@echo "  Done."
 	@echo "=========================================="
 
 # -------------------------------------------------------------------
