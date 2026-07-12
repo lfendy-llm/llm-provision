@@ -1,0 +1,15 @@
+---
+- name: create_devuser
+  user:
+    name: devuser
+    state: present
+    shell: /bin/bash
+    create_home: yes
+
+- name: add_devuser_to_sudoers
+  copy:
+    dest: /etc/sudoers.d/devuser
+    content: "devuser ALL=(ALL) NOPASSWD:ALL\n"
+    mode: '0440'
+    owner: root
+    group: root

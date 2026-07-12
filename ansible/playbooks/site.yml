@@ -7,3 +7,6 @@
   tasks:
     - name: Include apt_upgrade tasks
       ansible.builtin.import_tasks: ../tasks/apt_upgrade.yml
+
+    - name: Include create_user tasks
+      ansible.builtin.import_tasks: ../tasks/create_user.yml
