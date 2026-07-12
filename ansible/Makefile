@@ -1,14 +1,19 @@
-.PHONY: provision
+.PHONY: bootstrap provision
 
 # -------------------------------------------------------------------
-# provision — Run the Ansible playbook locally
-#
-# Sudo is handled by the playbook's become: yes setting.
-# If your user requires a password for sudo, run with -K:
-#   make provision ANSIBLE_ARGS="-K"
+# bootstrap — Run the bootstrap playbook (root: apt, user creation)
+# -------------------------------------------------------------------
+bootstrap:
+	@echo "=========================================="
+	@echo "  Makefile: Running bootstrap playbook"
+	@echo "=========================================="
+	ansible-playbook playbooks/bootstrap.yml $(ANSIBLE_ARGS)
+
+# -------------------------------------------------------------------
+# provision — Run the devuser provisioning playbook
 # -------------------------------------------------------------------
 provision:
 	@echo "=========================================="
-	@echo "  Running Ansible playbook locally"
+	@echo "  Makefile: Running provision playbook (devuser)"
 	@echo "=========================================="
-	ansible-playbook playbooks/site.yml $(ANSIBLE_ARGS)
+	ansible-playbook playbooks/provision.yml $(ANSIBLE_ARGS)

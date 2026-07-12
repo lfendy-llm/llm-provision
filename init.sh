@@ -6,9 +6,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/lfendy-llm/llm-provision/refs/heads/main/init.sh | sudo bash
 #
 # It will:
-#   1.  Install dependencies (via install-deps.sh).
-#   2.  Clone the llm-provision repository (if not already present).
-#   3.  Run the Ansible playbook (make provision).
+#   3.  Run the Ansible playbooks (bootstrap then provision).
 #
 # Usage:
 #   chmod +x init.sh
@@ -57,15 +55,15 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 3 — Run the Ansible playbook
+# Step 3 — Run the Ansible playbooks
 # ---------------------------------------------------------------------------
 echo ""
 echo "========================================"
-echo "  init.sh: Step 3 — Run Ansible playbook"
+echo "  init.sh: Step 3 — Run Ansible playbooks"
 echo "========================================"
 cd "${TARGET_DIR}/ansible"
+sudo make bootstrap
 sudo make provision
-
 echo ""
 echo "========================================"
 echo "  init.sh: Complete!"

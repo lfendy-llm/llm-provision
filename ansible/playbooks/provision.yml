@@ -1,0 +1,11 @@
+---
+- name: Configure devuser
+  hosts: local
+  become: yes
+  become_user: devuser
+  gather_facts: yes
+
+  tasks:
+    - name: devuser is present
+      debug:
+        msg: "Running as {{ ansible_user_id }}"
