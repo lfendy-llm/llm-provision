@@ -51,7 +51,7 @@ test_local: build
 		--name "$(CONTAINER_NAME)" \
 		-v "$(PWD):/home/$(EXEC_USER)/repos/llm-provision" \
 		"$(IMAGE_NAME)" \
-		bash -c "sudo bash /home/$(EXEC_USER)/repos/llm-provision/init.sh"
+		bash -c "bash /home/$(EXEC_USER)/repos/llm-provision/init.sh"
 
 # -------------------------------------------------------------------
 # build      — Build the test container image
