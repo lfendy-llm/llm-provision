@@ -10,6 +10,7 @@ ENV TZ=UTC
 
 # Set up systemd as the init system (required for testing service management)
 RUN apt-get update && apt-get install -y \
+    sudo \
     systemd \
     systemd-sysv \
     systemd-resolved \
@@ -36,8 +37,10 @@ RUN systemd-machine-id-setup
 # Configure systemd-resolved for DNS
 RUN systemctl enable systemd-resolved
 
-# Set up a basic sshd user and root password for testing (optional)
-RUN echo "root:root" | chpasswd
+# Create a non-privileged user with passwordless sudo
+RUN useradd -m -s /bin/bash -u 2000 localuser \
+    && echo "localuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/localuser \
+    && chmod 440 /etc/sudoers.d/localuser
 
 # Set working directory for provisioning scripts
 WORKDIR /provisioning
