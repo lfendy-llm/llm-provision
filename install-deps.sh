@@ -14,8 +14,8 @@ set -euo pipefail
 echo "========================================"
 echo "  apt update && apt upgrade"
 echo "========================================"
-sudo apt update -y
-sudo apt upgrade -y
+sudo apt-get update -y
+sudo apt-get upgrade -y
 
 echo ""
 echo "========================================"
@@ -23,7 +23,7 @@ echo "  Ensure git is installed"
 echo "========================================"
 if ! command -v git &>/dev/null; then
     echo "git not found — installing..."
-    sudo apt install -y git
+    sudo apt-get install -y git
 else
     echo "git is already installed ($(git --version))"
 fi
@@ -34,7 +34,7 @@ echo "  Ensure curl is installed"
 echo "========================================"
 if ! command -v curl &>/dev/null; then
     echo "curl not found — installing..."
-    sudo apt install -y curl
+    sudo apt-get install -y curl
 else
     echo "curl is already installed ($(curl --version 2>&1 | head -1))"
 fi
@@ -45,7 +45,7 @@ echo "  Ensure make is installed"
 echo "========================================"
 if ! command -v make &>/dev/null; then
     echo "make not found — installing..."
-    sudo apt install -y make
+    sudo apt-get install -y make
 else
     echo "make is already installed ($(make --version 2>&1 | head -1))"
 fi
@@ -56,7 +56,7 @@ echo "  Ensure Ansible is installed"
 echo "========================================"
 if ! command -v ansible-playbook &>/dev/null; then
     echo "ansible not found — installing..."
-    sudo apt install -y ansible
+    sudo apt-get install -y ansible
 else
     echo "ansible is already installed ($(ansible --version 2>&1 | head -1))"
 fi
