@@ -1,12 +1,12 @@
 ---
-- name: create_devuser
+- name: Ensure devuser exists
   user:
     name: devuser
     state: present
     shell: /bin/bash
     create_home: yes
 
-- name: add_devuser_to_sudoers
+- name: Ensure devuser has passwordless sudo
   copy:
     dest: /etc/sudoers.d/devuser
     content: "devuser ALL=(ALL) NOPASSWD:ALL\n"

@@ -1,5 +1,5 @@
 ---
-- name: apt_upgrade
+- name: Ensure system packages are up-to-date
   apt:
     update_cache: yes
     upgrade: dist

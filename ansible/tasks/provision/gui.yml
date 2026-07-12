@@ -3,23 +3,23 @@
   become: yes
   become_user: root
   block:
-    - name: Install xorg
+    - name: Ensure xorg is present
       apt:
         name: xorg
         state: present
 
-    - name: Install openbox without recommends
+    - name: Ensure openbox is present (without recommends)
       apt:
         name: openbox
         state: present
         install_recommends: no
 
-    - name: Install firefox
+    - name: Ensure firefox is present
       apt:
         name: firefox
         state: present
 
-    - name: Set x-www-browser to firefox
+    - name: Ensure x-www-browser points to firefox
       community.general.alternatives:
         name: x-www-browser
         path: /usr/bin/firefox

@@ -5,9 +5,9 @@
   gather_facts: yes
 
   tasks:
-    - name: Include apt_upgrade tasks
+    - name: Include apt upgrade tasks
       ansible.builtin.import_tasks: ../tasks/bootstrap/apt_upgrade.yml
 
-    - name: Include create_devuser tasks
+    - name: Include user setup tasks
       ansible.builtin.import_tasks: ../tasks/bootstrap/create_devuser.yml
 
