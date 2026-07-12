@@ -46,6 +46,7 @@ RUN useradd -m -s /bin/bash -u 2000 localuser \
 # apt update / upgrade, git, make, ansible — so tests skip these steps
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y \
+        curl \
         git \
         make \
         ansible \
