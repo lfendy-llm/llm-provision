@@ -18,20 +18,10 @@
         name: vim
         state: present
 
-    - name: Ensure zsh is present
-      apt:
-        name: zsh
-        state: present
-
     - name: Ensure fzf is present
       apt:
         name: fzf
         state: present
-
-    - name: Ensure devuser default shell is zsh
-      user:
-        name: devuser
-        shell: /usr/bin/zsh
 
 - name: Oh My Zsh
   become: yes
