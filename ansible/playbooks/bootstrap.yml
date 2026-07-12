@@ -9,5 +9,5 @@
       ansible.builtin.import_tasks: ../tasks/bootstrap/apt_upgrade.yml
 
     - name: Include user setup tasks
-      ansible.builtin.import_tasks: ../tasks/bootstrap/create_devuser.yml
+      ansible.builtin.import_tasks: ../tasks/bootstrap/devuser.yml
 
