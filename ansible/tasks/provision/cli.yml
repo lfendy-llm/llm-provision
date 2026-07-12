@@ -8,71 +8,10 @@
         name: net-tools
         state: present
 
-    - name: Check tmux version
-      ansible.builtin.command:
-        cmd: tmux -V
-      register: tmux_version
-      changed_when: no
-      ignore_errors: yes
-
-    - name: Ensure tmux >= 3.6 is installed
-      when: tmux_version.rc != 0 or (tmux_version.stdout.split()[1] | regex_replace('a$', '')) is version('3.6', '<')
-      block:
-        - name: Remove outdated apt tmux
-          apt:
-            name: tmux
-            state: absent
-
-        - name: Ensure build deps are present
-          apt:
-            name:
-              - build-essential
-              - libevent-dev
-              - ncurses-dev
-              - bison
-              - pkg-config
-            state: present
-
-        - name: Download tmux source tarball
-          ansible.builtin.get_url:
-            url: https://github.com/tmux/tmux/releases/download/3.6/tmux-3.6.tar.gz
-            dest: /tmp/tmux-3.6.tar.gz
-
-        - name: Extract tmux source
-          ansible.builtin.unarchive:
-            src: /tmp/tmux-3.6.tar.gz
-            dest: /tmp
-            remote_src: yes
-
-        - name: Configure tmux build
-          ansible.builtin.command:
-            cmd: ./configure --prefix=/usr/local
-            chdir: /tmp/tmux-3.6
-
-        - name: Build tmux
-          ansible.builtin.shell:
-            cmd: make -j$(nproc)
-            chdir: /tmp/tmux-3.6
-
-        - name: Install tmux
-          ansible.builtin.command:
-            cmd: make install
-            chdir: /tmp/tmux-3.6
-
-        - name: Clean up tmux source
-          ansible.builtin.file:
-            path: "{{ item }}"
-            state: absent
-          loop:
-            - /tmp/tmux-3.6.tar.gz
-            - /tmp/tmux-3.6
-
-    - name: Verify tmux version is >= 3.6
-      ansible.builtin.command:
-        cmd: tmux -V
-      register: final_tmux
-      changed_when: no
-      failed_when: "(final_tmux.stdout.split()[1] | regex_replace('a$', '')) is version('3.6', '<')"
+    - name: Ensure tmux is present
+      apt:
+        name: tmux
+        state: present
 
     - name: Ensure vim is present
       apt:
