@@ -18,7 +18,7 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 # Remote repository URL (hardcoded)
 # ---------------------------------------------------------------------------
-REMOTE_URL="git@github.com:lfendy-llm/llm-provision.git"
+REMOTE_URL="https://github.com/lfendy-llm/llm-provision.git"
 
 # ---------------------------------------------------------------------------
 # Step 1 — Update & upgrade
