@@ -1,16 +1,22 @@
-IMAGE_NAME    := llm-provision-test-image
 CONTAINER_NAME := llm-provision-test
 EXEC_USER     := localuser
 
 # Auto-detect podman or docker
 DOCKER_EXECUTABLE := $(shell command -v podman 2>/dev/null || command -v docker 2>/dev/null || echo docker)
 
-# Select Dockerfile based on LLM_PROVISION_TEST_CACHED (default: 1)
+# Select Dockerfile and image name based on LLM_PROVISION_TEST_CACHED (default: 1)
 override DOCKERFILE := $(shell \
   if [ "$(LLM_PROVISION_TEST_CACHED)" = "0" ]; then \
     echo test/Dockerfile; \
   else \
     echo test/Dockerfile.cached_init; \
+  fi)
+
+override IMAGE_NAME := $(shell \
+  if [ "$(LLM_PROVISION_TEST_CACHED)" = "0" ]; then \
+    echo llm-provision-test-bare; \
+  else \
+    echo llm-provision-test-cached; \
   fi)
 
 .PHONY: test test_local build clean
