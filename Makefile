@@ -4,16 +4,18 @@ EXEC_USER     := localuser
 # Auto-detect podman or docker
 DOCKER_EXECUTABLE := $(shell command -v podman 2>/dev/null || command -v docker 2>/dev/null || echo docker)
 
-# Select Dockerfile and image name based on LLM_PROVISION_TEST_CACHED (default: 1)
+# Image names
+BASE_IMAGE     := llm-provision-test
+CACHED_IMAGE   := llm-provision-test-cached
+
+# Select target based on LLM_PROVISION_TEST_CACHED (default: 1)
 ifeq ($(LLM_PROVISION_TEST_CACHED),0)
-  DOCKERFILE := test/Dockerfile.llm-provision-test
-  IMAGE_NAME := llm-provision-test
+  IMAGE_NAME := $(BASE_IMAGE)
 else
-  DOCKERFILE := test/Dockerfile.llm-provision-test-cached
-  IMAGE_NAME := llm-provision-test-cached
+  IMAGE_NAME := $(CACHED_IMAGE)
 endif
 
-.PHONY: test test_local bash build clean
+.PHONY: test test_local bash build build-base build-cached clean
 
 # -------------------------------------------------------------------
 # test       — Build the container and provision from GitHub
@@ -63,20 +65,40 @@ bash: build
 		bash
 
 # -------------------------------------------------------------------
-# build      — Build the test container image
+# build      — Build the selected image
 # -------------------------------------------------------------------
-build:
-	@echo "=========================================="
-	@echo "  Building container image: $(IMAGE_NAME)"
-	@echo "  Dockerfile: $(DOCKERFILE)"
-	@echo "=========================================="
-	$(DOCKER_EXECUTABLE) build -t "$(IMAGE_NAME)" -f "$(DOCKERFILE)" .
+ifeq ($(LLM_PROVISION_TEST_CACHED),0)
+build: build-base
+else
+build: build-cached
+endif
 
 # -------------------------------------------------------------------
-# clean      — Remove the test container and image
+# build-base  — Build the base image
+# -------------------------------------------------------------------
+build-base:
+	@echo "=========================================="
+	@echo "  Building container image: $(BASE_IMAGE)"
+	@echo "  Dockerfile: test/Dockerfile.$(BASE_IMAGE)"
+	@echo "=========================================="
+	$(DOCKER_EXECUTABLE) build -t "$(BASE_IMAGE)" -f "test/Dockerfile.$(BASE_IMAGE)" .
+
+# -------------------------------------------------------------------
+# build-cached — Build the cached image (depends on base)
+# -------------------------------------------------------------------
+build-cached: build-base
+	@echo "=========================================="
+	@echo "  Building container image: $(CACHED_IMAGE)"
+	@echo "  Dockerfile: test/Dockerfile.$(CACHED_IMAGE)"
+	@echo "=========================================="
+	$(DOCKER_EXECUTABLE) build -t "$(CACHED_IMAGE)" -f "test/Dockerfile.$(CACHED_IMAGE)" .
+
+# -------------------------------------------------------------------
+# clean      — Remove the test container and images
 # -------------------------------------------------------------------
 clean:
-	@echo "Removing container and image..."
+	@echo "Removing container and images..."
 	$(DOCKER_EXECUTABLE) rm -f "$(CONTAINER_NAME)" 2>/dev/null || true
-	$(DOCKER_EXECUTABLE) rmi "$(IMAGE_NAME)" 2>/dev/null || true
+	$(DOCKER_EXECUTABLE) rmi "$(BASE_IMAGE)" 2>/dev/null || true
+	$(DOCKER_EXECUTABLE) rmi "$(CACHED_IMAGE)" 2>/dev/null || true
 	@echo "Done."

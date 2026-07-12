@@ -1,54 +1,10 @@
 # Test container for provisioning a fresh Ubuntu Server
-# Based from the original Dockerfile with pre-cached init.sh dependencies
-# (apt update/upgrade, git, make, ansible) so tests run faster.
+# Based on the llm-provision-test base image with pre-cached init.sh
+# dependencies (apt update/upgrade, git, make, ansible) so tests run faster.
 
-FROM ubuntu:24.04
-
-# Prevent interactive prompts during package installation
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=UTC
-
-# Set up systemd as the init system (required for testing service management)
-RUN apt-get update && apt-get install -y \
-    sudo \
-    systemd \
-    systemd-sysv \
-    systemd-resolved \
-    dbus \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Remove unnecessary systemd units to speed up boot
-RUN rm -f /lib/systemd/system/systemd*udev* \
-    /lib/systemd/system/getty@* \
-    /lib/systemd/system/serial-getty@* \
-    /lib/systemd/system/console-getty* \
-    /lib/systemd/system/container-getty* \
-    /lib/systemd/system/autovt@* \
-    /lib/systemd/system/*-display-manager* \
-    /lib/systemd/system/*gdm* \
-    /lib/systemd/system/plymouth* \
-    /lib/systemd/system/hwclock* \
-    /lib/systemd/system/NetworkManager*
-
-# Create default machine-id for systemd
-RUN systemd-machine-id-setup
-
-# Configure systemd-resolved for DNS
-RUN systemctl enable systemd-resolved
-
-# Create a non-privileged user with passwordless sudo
-RUN useradd -m -s /bin/bash -u 2000 localuser \
-    && echo "localuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/localuser \
-    && chmod 440 /etc/sudoers.d/localuser
+FROM llm-provision-test
 
 # ---- Pre-cached dependencies (via install-deps.sh) ----
 # Kept in sync with install-deps.sh — any change there triggers a rebuild.
 COPY install-deps.sh /tmp/install-deps.sh
 RUN bash /tmp/install-deps.sh && rm /tmp/install-deps.sh
-
-# Set working directory for provisioning scripts
-WORKDIR /provisioning
-
-# Default command: run systemd as PID 1
-CMD ["/lib/systemd/systemd"]
