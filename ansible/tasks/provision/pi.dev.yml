@@ -51,3 +51,9 @@
         cmd: pi install npm:pi-deepseek-optimized
       register: deepseek
       changed_when: "'up to date' not in deepseek.stdout"
+
+    - name: Install pi-patty-bg-tasks
+      ansible.builtin.command:
+        cmd: pi install npm:pi-patty-bg-tasks
+      register: patty
+      changed_when: "'up to date' not in patty.stdout"
