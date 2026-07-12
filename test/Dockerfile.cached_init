@@ -42,16 +42,10 @@ RUN useradd -m -s /bin/bash -u 2000 localuser \
     && echo "localuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/localuser \
     && chmod 440 /etc/sudoers.d/localuser
 
-# ---- Pre-cached init.sh dependencies ----
-# apt update / upgrade, git, make, ansible — so tests skip these steps
-RUN apt-get update && apt-get upgrade -y \
-    && apt-get install -y \
-        curl \
-        git \
-        make \
-        ansible \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# ---- Pre-cached dependencies (via install-deps.sh) ----
+# Kept in sync with install-deps.sh — any change there triggers a rebuild.
+COPY install-deps.sh /tmp/install-deps.sh
+RUN bash /tmp/install-deps.sh && rm /tmp/install-deps.sh
 
 # Set working directory for provisioning scripts
 WORKDIR /provisioning

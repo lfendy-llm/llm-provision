@@ -61,7 +61,7 @@ build:
 	@echo "  Building container image: $(IMAGE_NAME)"
 	@echo "  Dockerfile: $(DOCKERFILE)"
 	@echo "=========================================="
-	$(DOCKER_EXECUTABLE) build -t "$(IMAGE_NAME)" -f "$(DOCKERFILE)" ./test
+	$(DOCKER_EXECUTABLE) build -t "$(IMAGE_NAME)" -f "$(DOCKERFILE)" .
 
 # -------------------------------------------------------------------
 # clean      — Remove the test container and image
