@@ -6,10 +6,10 @@ DOCKER_EXECUTABLE := $(shell command -v podman 2>/dev/null || command -v docker 
 
 # Select Dockerfile and image name based on LLM_PROVISION_TEST_CACHED (default: 1)
 ifeq ($(LLM_PROVISION_TEST_CACHED),0)
-  DOCKERFILE := test/Dockerfile
+  DOCKERFILE := test/Dockerfile.llm-provision-test
   IMAGE_NAME := llm-provision-test-bare
 else
-  DOCKERFILE := test/Dockerfile.cached_init
+  DOCKERFILE := test/Dockerfile.llm-provision-test-cached
   IMAGE_NAME := llm-provision-test-cached
 endif
 

@@ -3,7 +3,7 @@
 # install-deps.sh — Install dependencies for llm-provision.
 #
 # Shared between init.sh (run on a fresh server) and
-# Dockerfile.cached_init (pre-cached at build time) so they stay in sync.
+# Dockerfile.llm-provision-test-cached (pre-cached at build time) so they stay in sync.
 #
 # Usage:
 #   sudo bash install-deps.sh
