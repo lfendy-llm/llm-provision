@@ -1,5 +1,5 @@
 CONTAINER_NAME       := llm-provision-test
-SERVER_CONTAINER_NAME := llm-provision-server
+SERVER_CONTAINER_NAME := llm-provision-test-server
 EXEC_USER            := localuser
 
 # Auto-detect podman or docker
@@ -52,27 +52,45 @@ test_local: build
 
 # -------------------------------------------------------------------
 # server_local — Start a detached container with the repo mounted
-#                (like a live server you can exec into)
+#                (like a live server you can exec into).
+#                Idempotent: reuses or restarts as needed.
 # -------------------------------------------------------------------
 server_local: build
-	@echo "========================================"
-	@echo "  Makefile: Starting server container"
-	@echo "========================================"
-	$(DOCKER_EXECUTABLE) rm -f "$(SERVER_CONTAINER_NAME)" 2>/dev/null || true
-	$(DOCKER_EXECUTABLE) run -d \
-		--privileged \
-		--user "$(EXEC_USER)" \
-		--name "$(SERVER_CONTAINER_NAME)" \
-		-v "$(PWD):/home/$(EXEC_USER)/repos/llm-provision" \
-		"$(IMAGE_NAME)" \
-		sleep infinity
-	@echo "Container $(SERVER_CONTAINER_NAME) is running."
-	@echo "  Exec into it:  $(DOCKER_EXECUTABLE) exec -it $(SERVER_CONTAINER_NAME) bash"
+	@STATUS=$$($(DOCKER_EXECUTABLE) inspect --format='{{.State.Status}}' "$(SERVER_CONTAINER_NAME)" 2>/dev/null); \
+	if [ "$$STATUS" = "running" ]; then \
+		echo "========================================"; \
+		echo "  Makefile: Server container already running"; \
+		echo "========================================"; \
+	elif [ -n "$$STATUS" ]; then \
+		echo "========================================"; \
+		echo "  Makefile: Restarting stopped server container"; \
+		echo "========================================"; \
+		$(DOCKER_EXECUTABLE) rm -f "$(SERVER_CONTAINER_NAME)" >/dev/null 2>&1; \
+		$(DOCKER_EXECUTABLE) run -d \
+			--privileged \
+			--user "$(EXEC_USER)" \
+			--name "$(SERVER_CONTAINER_NAME)" \
+			-v "$(PWD):/home/$(EXEC_USER)/repos/llm-provision" \
+			"$(IMAGE_NAME)" \
+			sleep infinity; \
+	else \
+		echo "========================================"; \
+		echo "  Makefile: Starting server container"; \
+		echo "========================================"; \
+		$(DOCKER_EXECUTABLE) run -d \
+			--privileged \
+			--user "$(EXEC_USER)" \
+			--name "$(SERVER_CONTAINER_NAME)" \
+			-v "$(PWD):/home/$(EXEC_USER)/repos/llm-provision" \
+			"$(IMAGE_NAME)" \
+			sleep infinity; \
+	fi
+	@echo "Container $(SERVER_CONTAINER_NAME): $$($(DOCKER_EXECUTABLE) inspect --format='{{.State.Status}}' "$(SERVER_CONTAINER_NAME)")"
 
 # -------------------------------------------------------------------
 # test_server — Run init.sh inside the running server container
 # -------------------------------------------------------------------
-test_server:
+test_server: server_local
 	@echo "========================================"
 	@echo "  Makefile: Provisioning server container"
 	@echo "========================================"
