@@ -1,5 +1,7 @@
 ---
 - name: gui
+  become: yes
+  become_user: root
   block:
     - name: Install xorg
       apt:

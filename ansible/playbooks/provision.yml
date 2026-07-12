@@ -6,6 +6,5 @@
   gather_facts: yes
 
   tasks:
-    - name: devuser is present
-      debug:
-        msg: "Running as {{ ansible_user_id }}"
+    - name: Include install_gui tasks
+      ansible.builtin.import_tasks: ../tasks/provision/install_gui.yml
