@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 #
-# init.sh — Bootstrap a fresh Ubuntu Server.
+# init.sh — Bootstrap a fresh Ubuntu Server and provision it.
 #
-# This script is designed to be the very first thing you run on a new
-# Ubuntu Server installation.  It will:
+# This script is designed to be run on a new Ubuntu Server installation.
+# Alternatively, pipe it from GitHub:
+#   curl -fsSL https://raw.githubusercontent.com/lfendy-llm/llm-provision/refs/heads/main/init.sh | sudo bash
+#
+# It will:
 #   1.  Update package lists and upgrade all packages.
 #   2.  Ensure git is installed.
 #   3.  Ensure make is installed.
 #   4.  Ensure Ansible is installed.
+#   5.  Clone the llm-provision repository (if not already present).
 #
 # Usage:
 #   chmod +x init.sh
@@ -15,6 +19,8 @@
 #
 
 set -euo pipefail
+
+REMOTE_URL="https://github.com/lfendy-llm/llm-provision.git"
 
 # ---------------------------------------------------------------------------
 # Step 1 — Update & upgrade
@@ -67,4 +73,31 @@ else
     echo "ansible is already installed ($(ansible --version 2>&1 | head -1))"
 fi
 
+# ---------------------------------------------------------------------------
+# Step 5 — Clone the llm-provision repository (if not already present)
+# ---------------------------------------------------------------------------
+TARGET_DIR="${HOME}/repos/llm-provision"
+
+if [[ -d "$TARGET_DIR" ]]; then
+    echo ""
+    echo "========================================"
+    echo "  Step 5: Skipped — ${TARGET_DIR} already exists"
+    echo "========================================"
+else
+    echo ""
+    echo "========================================"
+    echo "  Step 5: Clone llm-provision"
+    echo "========================================"
+    echo "Cloning ${REMOTE_URL} into ${TARGET_DIR}..."
+    git clone "$REMOTE_URL" "$TARGET_DIR"
+    echo ""
+    echo "========================================"
+    echo "  Done! Repository is at ${TARGET_DIR}"
+    echo "========================================"
+fi
+
 echo ""
+echo "========================================"
+echo "  init.sh complete!"
+echo "  Run: cd ~/repos/llm-provision/ansible && make provision"
+echo "========================================"

@@ -5,7 +5,7 @@ EXEC_USER     := localuser
 # Auto-detect podman or docker
 DOCKER_EXECUTABLE := $(shell command -v podman 2>/dev/null || command -v docker 2>/dev/null || echo docker)
 
-.PHONY: test test_local clean
+.PHONY: test test_local test_ansible build clean
 
 # -------------------------------------------------------------------
 # test       — Build the container and provision from GitHub
@@ -21,9 +21,9 @@ test: build
 		"$(IMAGE_NAME)"
 	@sleep 2  # give systemd a moment to boot
 	@echo ""
-	@echo "--- Running pull.sh from GitHub (includes init.sh) ---"
+	@echo "--- Running init.sh from GitHub ---"
 	$(DOCKER_EXECUTABLE) exec --user "$(EXEC_USER)" "$(CONTAINER_NAME)" \
-		bash -c "curl -fsSL https://raw.githubusercontent.com/lfendy-llm/llm-provision/refs/heads/main/pull.sh | bash"
+		bash -c "curl -fsSL https://raw.githubusercontent.com/lfendy-llm/llm-provision/refs/heads/main/init.sh | bash"
 	@echo ""
 	@echo "=========================================="
 	@echo "  Done. Container is running."
@@ -32,7 +32,7 @@ test: build
 
 # -------------------------------------------------------------------
 # test_local — Build the container, mount local repo, run init.sh
-#              (skips pull.sh because the repo is mounted directly)
+#              (clone step auto-skips because repo is mounted)
 # -------------------------------------------------------------------
 test_local: build
 	@echo "=========================================="
@@ -46,7 +46,7 @@ test_local: build
 		"$(IMAGE_NAME)"
 	@sleep 2
 	@echo ""
-	@echo "--- Running init.sh from the mounted volume (skipping pull.sh) ---"
+	@echo "--- Running init.sh from the mounted volume ---"
 	$(DOCKER_EXECUTABLE) exec --user "$(EXEC_USER)" "$(CONTAINER_NAME)" \
 		bash /home/$(EXEC_USER)/repos/llm-provision/init.sh
 	@echo ""
