@@ -10,6 +10,7 @@ ENV TZ=UTC
 
 # Set up systemd as the init system (required for testing service management)
 RUN apt-get update && apt-get install -y \
+    curl \
     sudo \
     systemd \
     systemd-sysv \

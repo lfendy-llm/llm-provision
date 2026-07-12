@@ -35,16 +35,6 @@ else
     echo "git is already installed ($(git --version))"
 fi
 
-echo ""
-echo "========================================"
-echo "  install-deps: Ensure curl is installed"
-echo "========================================"
-if ! command -v curl &>/dev/null; then
-    echo "curl not found — installing..."
-    $SUDO apt-get install -y curl
-else
-    echo "curl is already installed ($(curl --version 2>&1 | head -1))"
-fi
 
 echo ""
 echo "========================================"
