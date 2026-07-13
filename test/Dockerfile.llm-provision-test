@@ -1,8 +1,9 @@
-# Test container for provisioning a fresh Ubuntu Server
+# Test container for provisioning a fresh Ubuntu 26.04 Server
 # This container mimics a fresh Ubuntu Server install for running
 # provisioning tests (systemd services, apt packages, config files, etc.)
 
-FROM ubuntu:24.04
+FROM ubuntu:26.04
+
 
 # Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive

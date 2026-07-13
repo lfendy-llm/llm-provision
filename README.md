@@ -1,6 +1,6 @@
 # llm-provision
 
-Bootstrap and provision a fresh Ubuntu Server with Ansible — installs CLI tools, Podman, pi coding agent, SSH, a lightweight GUI, and dotfiles.
+Bootstrap and provision a fresh **Ubuntu 26.04** Server with Ansible — installs CLI tools, Podman, pi coding agent, SSH, a lightweight GUI, and dotfiles.
 
 ## Quickstart
 
@@ -54,7 +54,7 @@ Configures everything as `devuser`:
 
 ## Testing
 
-Tests run inside a Podman/Docker container that mimics a fresh Ubuntu 24.04 server.
+Tests run inside a Podman/Docker container that mimics a fresh Ubuntu 26.04 server.
 
 ### Prerequisites
 
@@ -89,7 +89,7 @@ make clean
 
 | Image | Base | Contents |
 |---|---|---|
-| `llm-provision-test` | `ubuntu:24.04` | systemd, curl, sudo, dbus, `localuser` (passwordless sudo) |
+| `llm-provision-test` | `ubuntu:26.04` | systemd, curl, sudo, dbus, `localuser` (passwordless sudo) |
 | `llm-provision-test-cached` | `llm-provision-test` | Plus pre-cached `git`, `make`, `ansible` (via `install-deps.sh`) |
 
 Set `LLM_PROVISION_TEST_CACHED=0` to use the uncached base image (tests are slower but closer to a truly fresh environment):
